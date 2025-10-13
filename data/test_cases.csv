@@ -1,0 +1,25 @@
+category,input,expected_response_type,notes
+greeting,hi,greeting_response,Simple greeting
+greeting,hello,greeting_response,Standard greeting
+greeting,hey,greeting_response,Casual greeting
+greeting,Hi there!,greeting_response,Greeting with punctuation
+greeting,HELLO,greeting_response,Uppercase greeting
+greeting,hey buddy,greeting_response,Greeting with extra words
+how_are_you,how are you,how_are_you_response,Basic question
+how_are_you,how are you?,how_are_you_response,Question with punctuation
+how_are_you,HOW ARE YOU,how_are_you_response,Uppercase question
+how_are_you,how are you doing,how_are_you_response,Extended question
+how_are_you,how are you today,how_are_you_response,Question with time reference
+unknown,what's your name,default_response,Unrecognized input
+unknown,tell me a joke,default_response,Request for feature not implemented
+unknown,what time is it,default_response,Time-related question
+unknown,help me,default_response,Help request
+unknown,goodbye,default_response,Farewell (not exit)
+unknown,thanks,default_response,Gratitude
+unknown,random text,default_response,Nonsense input
+unknown,,default_response,Empty input
+edge_case,exit,exit_response,Should end conversation
+edge_case,EXIT,exit_response,Uppercase exit command
+mixed,Hi!,greeting_response,Greeting with exclamation
+mixed,Hello.,greeting_response,Greeting with period
+mixed,How Are You???,how_are_you_response,Question with multiple punctuation

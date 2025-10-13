@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wipro AI Chatbot Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .chat-container {
+            width: 100%;
+            max-width: 800px;
+            height: 80vh;
+            max-height: 600px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #0073E6 0%, #004C99 100%);
+            color: white;
+            padding: 20px;
+            position: relative;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .wipro-branding {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .wipro-logo {
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+        }
+
+        .wipro-text {
+            font-size: 14px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .chat-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .status-indicator {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .status-indicator.connected {
+            background: rgba(40, 167, 69, 0.8);
+        }
+
+        .status-indicator.disconnected {
+            background: rgba(220, 53, 69, 0.8);
+        }
+
+
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: #f8f9fa;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.user {
+            justify-content: flex-end;
+        }
+
+        .message.bot {
+            justify-content: flex-start;
+        }
+
+        .message-bubble {
+            max-width: 70%;
+            padding: 12px 18px;
+            border-radius: 18px;
+            font-size: 14px;
+            line-height: 1.4;
+            word-wrap: break-word;
+            position: relative;
+        }
+
+        .message.user .message-bubble {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+
+        .message.bot .message-bubble {
+            background: #e9ecef;
+            color: #333;
+            border-bottom-left-radius: 5px;
+        }
+
+        .message-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            margin: 0 10px;
+            flex-shrink: 0;
+        }
+
+        .message.user .message-avatar {
+            background: #667eea;
+            color: white;
+            order: 1;
+        }
+
+        .message.bot .message-avatar {
+            background: #28a745;
+            color: white;
+        }
+
+        .timestamp {
+            font-size: 10px;
+            opacity: 0.6;
+            margin-top: 5px;
+        }
+
+        .chat-input-container {
+            padding: 20px;
+            background: white;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .chat-input-form {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 12px 18px;
+            border: 2px solid #e9ecef;
+            border-radius: 25px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .chat-input:focus {
+            border-color: #667eea;
+        }
+
+        .send-button {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s, opacity 0.2s;
+            min-width: 80px;
+        }
+
+        .send-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+        }
+
+        .send-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .typing-indicator {
+            display: none;
+            padding: 12px 18px;
+            background: #e9ecef;
+            border-radius: 18px;
+            border-bottom-left-radius: 5px;
+            max-width: 70%;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .typing-indicator::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            background: linear-gradient(45deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-radius: 23px;
+            animation: pulse 2s infinite;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #667eea;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        .typing-dot:nth-child(3) { animation-delay: 0s; }
+
+        @keyframes typing {
+            0%, 80%, 100% { 
+                transform: scale(0.6); 
+                opacity: 0.3;
+                background: #ccc;
+            }
+            40% { 
+                transform: scale(1.2); 
+                opacity: 1;
+                background: #667eea;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 0.3;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.6;
+                transform: scale(1.02);
+            }
+        }
+
+        .welcome-message {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 10px;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            border: 1px solid #f5c6cb;
+        }
+
+        .connection-status {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+
+        .connection-status.online {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .connection-status.offline {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .chat-container {
+                height: 90vh;
+            }
+            
+            .chat-header {
+                padding: 15px;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .wipro-branding {
+                order: -1;
+            }
+            
+            .chat-title {
+                font-size: 1.2em;
+            }
+            
+            .message-bubble {
+                max-width: 85%;
+            }
+            
+            .status-indicator {
+                position: static;
+                margin-top: 10px;
+                display: inline-block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <div class="header-content">
+                <div class="wipro-branding">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiByeD0iOCIgZmlsbD0iIzAwNzNFNiIvPgo8dGV4dCB4PSI1IiB5PSIyNSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyIiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0id2hpdGUiPlc8L3RleHQ+Cjx0ZXh0IHg9IjE1IiB5PSIyNSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjEwIiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0id2hpdGUiPmlwcm88L3RleHQ+Cjwvc3ZnPgo=" alt="Wipro" class="wipro-logo">
+                    <span class="wipro-text">Wipro</span>
+                </div>
+                <div class="chat-title">🤖 AI Chatbot Assistant</div>
+                <div class="status-indicator" id="statusIndicator">Connecting...</div>
+            </div>
+        </div>
+        
+        <div class="chat-messages" id="chatMessages">
+            <div class="welcome-message">
+                👋 Welcome to Wipro AI Assistant! <br>
+                I can help you with Power BI, programming questions, and general inquiries. How can I assist you today?
+            </div>
+        </div>
+        
+        <div class="chat-input-container">
+            <form class="chat-input-form" id="chatForm">
+                <input 
+                    type="text" 
+                    class="chat-input" 
+                    id="messageInput" 
+                    placeholder="Type your message here..." 
+                    autocomplete="off"
+                    maxlength="500"
+                >
+                <button type="submit" class="send-button" id="sendButton">
+                    Send
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="connection-status offline" id="connectionStatus">
+        🔴 Connecting to chatbot...
+    </div>
+
+    <script>
+        class ChatInterface {
+            constructor() {
+                this.chatMessages = document.getElementById('chatMessages');
+                this.messageInput = document.getElementById('messageInput');
+                this.sendButton = document.getElementById('sendButton');
+                this.chatForm = document.getElementById('chatForm');
+                this.statusIndicator = document.getElementById('statusIndicator');
+                this.connectionStatus = document.getElementById('connectionStatus');
+                
+                this.isOnline = false;
+                this.messageQueue = [];
+                
+                this.setupEventListeners();
+                this.checkConnection();
+                this.messageInput.focus();
+            }
+
+            setupEventListeners() {
+                this.chatForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.sendMessage();
+                });
+
+                this.messageInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        this.sendMessage();
+                    }
+                });
+
+                // Check connection periodically
+                setInterval(() => this.checkConnection(), 30000);
+            }
+
+            async checkConnection() {
+                try {
+                    const response = await fetch('/stats');
+                    await response.json();
+                    
+                    this.isOnline = true;
+                    this.updateConnectionStatus(true);
+                    
+                } catch (error) {
+                    this.isOnline = false;
+                    this.updateConnectionStatus(false);
+                }
+            }
+
+            updateConnectionStatus(online) {
+                if (online) {
+                    this.statusIndicator.textContent = '✓ Connected';
+                    this.statusIndicator.className = 'status-indicator connected';
+                    this.connectionStatus.textContent = '🟢 Chatbot Online';
+                    this.connectionStatus.className = 'connection-status online';
+                } else {
+                    this.statusIndicator.textContent = '⚠ Offline';
+                    this.statusIndicator.className = 'status-indicator disconnected';
+                    this.connectionStatus.textContent = '🔴 Chatbot Offline';
+                    this.connectionStatus.className = 'connection-status offline';
+                }
+            }
+
+            updateStats(data) {
+                // Stats display removed for cleaner UI
+            }
+
+            async sendMessage() {
+                const message = this.messageInput.value.trim();
+                if (!message) return;
+
+                // Add user message to chat
+                this.addMessage(message, 'user');
+                
+                // Clear input and show loading
+                this.messageInput.value = '';
+                this.setLoading(true);
+                this.showTypingIndicator();
+
+                try {
+                    // Add minimum 2-second delay for better UX
+                    const startTime = Date.now();
+                    
+                    const response = await fetch('/chat', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ message: message })
+                    });
+
+                    const data = await response.json();
+                    
+                    // Calculate remaining delay time
+                    const elapsedTime = Date.now() - startTime;
+                    const remainingDelay = Math.max(0, 2000 - elapsedTime);
+                    
+                    // Wait for the remaining delay
+                    await new Promise(resolve => setTimeout(resolve, remainingDelay));
+                    
+                    this.hideTypingIndicator();
+
+                    if (data.status === 'success') {
+                        this.addMessageWithAnimation(data.response, 'bot');
+                    } else {
+                        this.addMessageWithAnimation('Sorry, there was an error processing your message.', 'bot');
+                    }
+
+                    // Check connection status
+                    this.checkConnection();
+
+                } catch (error) {
+                    console.error('Error:', error);
+                    
+                    // Still respect the minimum delay even for errors
+                    const elapsedTime = Date.now() - startTime;
+                    const remainingDelay = Math.max(0, 2000 - elapsedTime);
+                    await new Promise(resolve => setTimeout(resolve, remainingDelay));
+                    
+                    this.hideTypingIndicator();
+                    
+                    if (!this.isOnline) {
+                        this.addMessageWithAnimation('Sorry, I\'m currently offline. Please check your connection and try again.', 'bot');
+                    } else {
+                        this.addMessageWithAnimation('Sorry, I encountered an error. Please try again.', 'bot');
+                    }
+                }
+
+                this.setLoading(false);
+                this.messageInput.focus();
+            }
+
+            addMessage(text, sender) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${sender}`;
+                
+                const avatar = document.createElement('div');
+                avatar.className = 'message-avatar';
+                avatar.textContent = sender === 'user' ? 'You' : '🤖';
+                
+                const bubble = document.createElement('div');
+                bubble.className = 'message-bubble';
+                bubble.innerHTML = text;
+                
+                // Add timestamp
+                const timestamp = document.createElement('div');
+                timestamp.className = 'timestamp';
+                timestamp.textContent = new Date().toLocaleTimeString();
+                bubble.appendChild(timestamp);
+                
+                messageDiv.appendChild(avatar);
+                messageDiv.appendChild(bubble);
+                
+                this.chatMessages.appendChild(messageDiv);
+                this.scrollToBottom();
+            }
+
+            addMessageWithAnimation(text, sender) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${sender}`;
+                messageDiv.style.opacity = '0';
+                messageDiv.style.transform = 'translateY(20px)';
+                
+                const avatar = document.createElement('div');
+                avatar.className = 'message-avatar';
+                avatar.textContent = sender === 'user' ? 'You' : '🤖';
+                
+                const bubble = document.createElement('div');
+                bubble.className = 'message-bubble';
+                
+                // Add timestamp
+                const timestamp = document.createElement('div');
+                timestamp.className = 'timestamp';
+                timestamp.textContent = new Date().toLocaleTimeString();
+                
+                messageDiv.appendChild(avatar);
+                messageDiv.appendChild(bubble);
+                
+                this.chatMessages.appendChild(messageDiv);
+                this.scrollToBottom();
+                
+                // Animate the message appearance
+                setTimeout(() => {
+                    messageDiv.style.transition = 'all 0.4s ease-out';
+                    messageDiv.style.opacity = '1';
+                    messageDiv.style.transform = 'translateY(0)';
+                }, 50);
+                
+                // Type out the message text with animation
+                this.typeMessage(bubble, text, timestamp);
+            }
+
+            typeMessage(bubble, text, timestamp) {
+                // Check if text contains HTML
+                const hasHTML = /<[^>]*>/.test(text);
+                
+                if (hasHTML) {
+                    // For HTML content, display immediately to preserve links
+                    bubble.innerHTML = text;
+                    bubble.appendChild(timestamp);
+                    this.scrollToBottom();
+                } else {
+                    // For plain text, use typing animation
+                    let index = 0;
+                    const typingSpeed = 30; // milliseconds per character
+                    
+                    const typeChar = () => {
+                        if (index < text.length) {
+                            bubble.textContent = text.substring(0, index + 1);
+                            index++;
+                            setTimeout(typeChar, typingSpeed);
+                            this.scrollToBottom();
+                        } else {
+                            // Add timestamp after typing is complete
+                            bubble.appendChild(timestamp);
+                            this.scrollToBottom();
+                        }
+                    };
+                    
+                    typeChar();
+                }
+            }
+
+            showTypingIndicator() {
+                const typingDiv = document.createElement('div');
+                typingDiv.className = 'message bot';
+                typingDiv.id = 'typingIndicator';
+                typingDiv.style.opacity = '0';
+                typingDiv.style.transform = 'translateY(10px)';
+                
+                const avatar = document.createElement('div');
+                avatar.className = 'message-avatar';
+                avatar.textContent = '🤖';
+                
+                const typingBubble = document.createElement('div');
+                typingBubble.className = 'typing-indicator';
+                typingBubble.style.display = 'flex';
+                
+                const typingDots = document.createElement('div');
+                typingDots.className = 'typing-dots';
+                
+                for (let i = 0; i < 3; i++) {
+                    const dot = document.createElement('div');
+                    dot.className = 'typing-dot';
+                    typingDots.appendChild(dot);
+                }
+                
+                typingBubble.appendChild(typingDots);
+                typingDiv.appendChild(avatar);
+                typingDiv.appendChild(typingBubble);
+                
+                this.chatMessages.appendChild(typingDiv);
+                
+                // Animate the typing indicator appearance
+                setTimeout(() => {
+                    typingDiv.style.transition = 'all 0.3s ease-out';
+                    typingDiv.style.opacity = '1';
+                    typingDiv.style.transform = 'translateY(0)';
+                }, 50);
+                
+                this.scrollToBottom();
+                
+                // Add thinking status messages
+                this.showThinkingStatus();
+            }
+
+            showThinkingStatus() {
+                const messages = [
+                    'AI is thinking...',
+                    'Processing your question...',
+                    'Analyzing query...',
+                    'Preparing response...'
+                ];
+                
+                let messageIndex = 0;
+                this.thinkingInterval = setInterval(() => {
+                    this.sendButton.textContent = messages[messageIndex];
+                    messageIndex = (messageIndex + 1) % messages.length;
+                }, 500);
+            }
+
+            hideThinkingStatus() {
+                if (this.thinkingInterval) {
+                    clearInterval(this.thinkingInterval);
+                    this.thinkingInterval = null;
+                }
+            }
+
+            hideTypingIndicator() {
+                const typingIndicator = document.getElementById('typingIndicator');
+                if (typingIndicator) {
+                    // Animate out the typing indicator
+                    typingIndicator.style.transition = 'all 0.3s ease-out';
+                    typingIndicator.style.opacity = '0';
+                    typingIndicator.style.transform = 'translateY(-10px)';
+                    
+                    setTimeout(() => {
+                        if (typingIndicator.parentNode) {
+                            typingIndicator.remove();
+                        }
+                    }, 300);
+                }
+                
+                this.hideThinkingStatus();
+            }
+
+            setLoading(loading) {
+                this.sendButton.disabled = loading;
+                this.messageInput.disabled = loading;
+                
+                if (loading) {
+                    this.sendButton.textContent = 'Sending...';
+                    this.sendButton.style.background = 'linear-gradient(135deg, #95a5ea 0%, #9575d2 100%)';
+                } else {
+                    this.sendButton.textContent = 'Send';
+                    this.sendButton.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                    this.hideThinkingStatus();
+                }
+            }
+
+            scrollToBottom() {
+                this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+            }
+        }
+
+        // Initialize the chat interface when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new ChatInterface();
+        });
+    </script>
+</body>
+</html>
