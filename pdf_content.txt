@@ -1,0 +1,79 @@
+ 
+Internal - General Use  Query 1: Data Mismatch in Power BI Export  
+Q: Why is there a discrepancy between the number shown on screen and the exported 
+data from Power BI?  
+ A: The issue arises when attributes are added to the visualization. Removing them aligns 
+the data. Exported CSV values are static and not bound by model logic, so summing them 
+directly may be unsafe.  
+ 
+Query 2: Connecting Power BI Server to Azure Databricks  
+Q: How can I connect Power BI Server to Azure Databricks?  
+ A: Use the “Azure Databricks” connector (not “Databricks”) via the Colo -1 Power Platform 
+gateway. Follow the instructions on the Power BI Gateway SharePoint page.  
+ 
+Query 3: Scheduled Refresh Error in Power BI  
+Q: Why does my Power BI report fail during scheduled refresh but works manually?  
+ A: It could be due to dynamic file usage (e.g., daily Excel files). Ensure the file format (e.g., 
+XLSX) and hosting (e.g., SharePoint) are consistent and supported.  
+ 
+Query 4: Unable to Refresh Dataset  
+Q: How can I refresh a Power BI report if I don’t have access or know the developer?  
+ A: If the report is in a personal workspace, it may lack traceability. Temporarily moving the 
+workspace to Premium can help provide access.  
+ 
+ 
+Internal - General Use  Query 5: Jira Power BI Plugin Disabled  
+Q: Why is my Power BI dashboard failing to refresh from Jira?  
+ A: The Power BI plugin in Jira was disabled due to issues. It has since been re -enabled.  
+ 
+Query 6: Report Throttling Due to Capacity  
+Q: What causes throttling in Power BI reports?  
+ A: Large dashboards (e.g., 710 MB) can cause capacity issues. Semantic model 
+compression affects memory differently than disk size. Optimization and workspace 
+quarantine may be needed.  
+ 
+Query 7: Dataflow Running Too Long  
+Q: What happens if a dataflow runs for more than 5 hours?  
+ A: It will be auto -cancelled. Removing the workspace from Premium temporarily can help 
+resolve stuck refreshes.  
+ 
+Query 8: Gateway Issue During Report Refresh  
+Q: Why did my Sales Cockpit report fail to refresh?  
+ A: It was due to a gateway version update. The issue resolved after retrying.  
+ 
+Query 9: User -Initiated Data Refresh  
+Q: Can users trigger a data refresh from the app?  
+ A: Technically yes, via Power Automate, but it’s discouraged due to asynchronous 
+behavior and potential overload (429 errors).  
+ 
+Internal - General Use   
+Query 10: Time Zone Handling in Power BI  
+Q: How can I display datetime in a specific timezone like Central Time?  
+ A: Convert everything to UTC upstream and only convert to local time at the final display 
+step. Power BI lacks built -in timezone support.  
+ 
+Query 11: Cancelling a Stuck Dataflow  
+Q: How can I cancel a dataflow refresh that won’t stop?  
+ A: If regular cancellation fails, it will auto -fail after 24 hours. You can retry after that.  
+ 
+Query 12: Missing “Create App” Option  
+Q: Why can’t I see the “Create App” option in my workspace?  
+ A: Only one app per workspace is allowed. If an app exists, you can only update or 
+unpublish it.  
+ 
+Query 13: API Connection Not Working in Dataflow  
+Q: Why does my API connection work in Power BI Desktop but not in a dataflow?  
+ A: API connections require a gateway. Multiple users can access it using the gateway 
+owner’s credentials.  
+ 
+Query 14: Excel Live Connection Capacity Impact  
+Q: Is it safe for 30 users to use live Excel connections to a semantic model 
+simultaneously?  
+ 
+Internal - General Use   A: Not recommended during capacity overutilization. Use standard Excel exports instead. 
+Live connections can request large result sets and strain resources.  
+ 
+Query 15: Hive Server Connection Issue  
+Q: How can I connect Hive server to Power BI?  
+ A: Use Cloudera drivers (not paid ones). Ensure TLS 1.2 or higher and a 64 -bit System DSN.  
+ 

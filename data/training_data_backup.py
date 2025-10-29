@@ -1,4 +1,4 @@
-# Training Data for Chatbot - CORRECTED FROM AMAAN Q&A.PDF
+# Training Data for Chatbot
 # Format: {"question": "user query", "answer": "chatbot response", "keywords": ["key", "words"]}
 
 import json
@@ -80,42 +80,82 @@ training_data = [
         "keywords": ['power', 'bi', 'powerbi', 'business', 'intelligence', 'microsoft', 'dashboard', 'visualization', 'data', 'analytics']
     },
     {
-        "question": "Why is there a discrepancy between the number shown on screen and the exported data from Power BI?",
-        "answer": "The issue arises when attributes are added to the visualization. Removing them aligns the data. Exported CSV values are static and not bound by model logic, so summing them directly may be unsafe.",
-        "keywords": ['power', 'bi', 'export', 'data', 'discrepancy', 'csv', 'visualization', 'attributes', 'mismatch', 'screen']
+        "question": "Why is there a discrepancy when exporting data from Power BI to CSV?",
+        "answer": "Data discrepancies can occur due to visualization filters, data type conversions, or different aggregation methods between the visual and export. Check your filters and data model.",
+        "keywords": ['power', 'bi', 'export', 'data', 'discrepancy', 'csv', 'visualization', 'attributes']
     },
     {
         "question": "How can I connect Power BI Server to Azure Databricks?",
-        "answer": "Use the "Azure Databricks" connector (not "Databricks") via the Colo-1 Power Platform gateway. Follow the instructions on the Power BI Gateway SharePoint page.",
+        "answer": "Use the \"Azure Databricks\" connector (not \"Databricks\") via the Colo-1 Power Platform gateway. Follow the instructions on the Power BI Gateway SharePoint page.",
         "keywords": ['power', 'bi', 'server', 'azure', 'databricks', 'connector', 'gateway', 'connection', 'colo-1', 'platform', 'sharepoint', 'azure_databricks']
     },
     {
-        "question": "Why does my Power BI report fail during scheduled refresh but works manually?",
-        "answer": "It could be due to dynamic file usage (e.g., daily Excel files). Ensure the file format (e.g., XLSX) and hosting (e.g., SharePoint) are consistent and supported.",
-        "keywords": ['power', 'bi', 'report', 'fail', 'scheduled', 'refresh', 'manual', 'dynamic', 'excel', 'xlsx', 'sharepoint']
+        "question": "Can I use Databricks SQL with Power BI?",
+        "answer": "Yes, you can connect Power BI to Databricks SQL using the native connector. Ensure you have the correct endpoint URL and access tokens configured.",
+        "keywords": ['databricks', 'sql', 'power', 'bi', 'connector', 'endpoint', 'tokens', 'connection']
     },
     {
-        "question": "How can I refresh a Power BI report if I don't have access or know the developer?",
-        "answer": "If the report is in a personal workspace, it may lack traceability. Temporarily moving the workspace to Premium can help provide access.",
-        "keywords": ['refresh', 'power', 'bi', 'report', 'access', 'developer', 'personal', 'workspace', 'premium', 'traceability']
+        "question": "What's the difference between Import and DirectQuery in Power BI?",
+        "answer": "Import loads data into Power BI's memory for fast performance but has size limits. DirectQuery queries the source in real-time, keeping data fresh but potentially slower.",
+        "keywords": ['import', 'directquery', 'power', 'bi', 'memory', 'performance', 'real-time', 'data']
     },
     {
-        "question": "Why is my Power BI dashboard failing to refresh from Jira?",
-        "answer": "The Power BI plugin in Jira was disabled due to issues. It has since been re-enabled.",
-        "keywords": ['power', 'bi', 'dashboard', 'refresh', 'jira', 'plugin', 'disabled', 're-enabled']
+        "question": "How do I optimize Power BI report performance?",
+        "answer": "Use efficient DAX measures, minimize visuals per page, optimize data model relationships, consider aggregations, and use DirectQuery wisely.",
+        "keywords": ['optimize', 'power', 'bi', 'performance', 'dax', 'measures', 'visuals', 'aggregations']
     },
     {
-        "question": "What causes throttling in Power BI reports?",
-        "answer": "Large dashboards (e.g., 710 MB) can cause capacity issues. Semantic model compression affects memory differently than disk size. Optimization and workspace quarantine may be needed.",
-        "keywords": ['throttling', 'power', 'bi', 'reports', 'capacity', 'large', 'dashboards', 'semantic', 'model', 'compression', 'memory', 'optimization', 'quarantine']
+        "question": "What are Power BI gateways used for?",
+        "answer": "Gateways enable secure data transfer between on-premises data sources and Power BI cloud service. They're essential for hybrid cloud scenarios.",
+        "keywords": ['power', 'bi', 'gateway', 'on-premises', 'cloud', 'data', 'transfer', 'security']
     },
     {
-        "question": "What happens if a dataflow runs for more than 5 hours?",
-        "answer": "It will be auto-cancelled. Removing the workspace from Premium temporarily can help resolve stuck refreshes.",
-        "keywords": ['dataflow', '5', 'hours', 'auto-cancelled', 'workspace', 'premium', 'stuck', 'refreshes']
+        "question": "How do I schedule data refresh in Power BI?",
+        "answer": "In Power BI Service, go to your dataset settings and configure scheduled refresh. You can set up to 8 daily refreshes with Power BI Pro.",
+        "keywords": ['schedule', 'data', 'refresh', 'power', 'bi', 'service', 'dataset', 'daily']
     },
     {
-        "question": "Why did my Sales Cockpit report fail to refresh?",
+        "question": "What is row-level security in Power BI?",
+        "answer": "Row-level security (RLS) restricts data access for given users. You define rules in Power BI Desktop and they're enforced when users view reports.",
+        "keywords": ['row', 'level', 'security', 'rls', 'power', 'bi', 'access', 'users', 'rules']
+    },
+    {
+        "question": "How do I create calculated columns vs measures in Power BI?",
+        "answer": "Calculated columns are computed during data load and stored in the model. Measures are computed dynamically during query time. Use measures for aggregations.",
+        "keywords": ['calculated', 'columns', 'measures', 'power', 'bi', 'dax', 'aggregations', 'dynamic']
+    },
+    {
+        "question": "What's the difference between Power BI Pro and Premium?",
+        "answer": "Pro is per-user licensing for collaboration and sharing. Premium provides dedicated capacity, larger datasets, and features like paginated reports and AI.",
+        "keywords": ['power', 'bi', 'pro', 'premium', 'licensing', 'capacity', 'datasets', 'paginated', 'reports']
+    },
+    {
+        "question": "How do I handle many-to-many relationships in Power BI?",
+        "answer": "Use bridge tables or enable many-to-many relationships in the model. Be careful with performance implications and ensure proper filter context.",
+        "keywords": ['many', 'to', 'many', 'relationships', 'power', 'bi', 'bridge', 'tables', 'filter', 'context']
+    },
+    {
+        "question": "What are Power BI dataflows?",
+        "answer": "Dataflows are a self-service data prep solution that allows you to extract, transform, and load data into Power BI's common data service.",
+        "keywords": ['power', 'bi', 'dataflows', 'self-service', 'data', 'prep', 'etl', 'common', 'data', 'service']
+    },
+    {
+        "question": "How do I use Power BI REST APIs?",
+        "answer": "Power BI REST APIs allow programmatic access to Power BI artifacts. You need to register an Azure AD app and use OAuth for authentication.",
+        "keywords": ['power', 'bi', 'rest', 'apis', 'programmatic', 'azure', 'ad', 'oauth', 'authentication']
+    },
+    {
+        "question": "What is Power BI Embedded?",
+        "answer": "Power BI Embedded lets you integrate Power BI reports and dashboards into your applications. It's designed for ISVs and developers.",
+        "keywords": ['power', 'bi', 'embedded', 'integrate', 'applications', 'isv', 'developers', 'reports', 'dashboards']
+    },
+    {
+        "question": "How do I troubleshoot Power BI data source connection issues?",
+        "answer": "Check credentials, firewall settings, gateway status, and connection strings. Review gateway logs and test connectivity from the gateway machine.",
+        "keywords": ['troubleshoot', 'power', 'bi', 'data', 'source', 'connection', 'credentials', 'firewall', 'gateway']
+    },
+    {
+        "question": "Why was the sales cockpit report refresh delayed?",
         "answer": "It was due to a gateway version update. The issue resolved after retrying.",
         "keywords": ['sales', 'cockpit', 'report', 'refresh', 'gateway', 'version', 'update', 'retry']
     },
@@ -127,7 +167,7 @@ training_data = [
     {
         "question": "How can I display datetime in a specific timezone like Central Time?",
         "answer": "Convert everything to UTC upstream and only convert to local time at the final display step. Power BI lacks built-in timezone support.",
-        "keywords": ['datetime', 'timezone', 'central', 'time', 'utc', 'local', 'display', 'power', 'bi', 'support']
+        "keywords": ['datetime', 'timezone', 'central', 'time', 'utc', 'local', 'display', 'power', 'bi']
     },
     {
         "question": "How can I cancel a dataflow refresh that won't stop?",
@@ -140,34 +180,19 @@ training_data = [
         "keywords": ['create', 'app', 'workspace', 'one', 'per', 'update', 'unpublish']
     },
     {
-        "question": "Why does my API connection work in Power BI Desktop but not in a dataflow?",
-        "answer": "API connections require a gateway. Multiple users can access it using the gateway owner's credentials.",
-        "keywords": ['api', 'connection', 'power', 'bi', 'desktop', 'dataflow', 'gateway', 'users', 'credentials']
-    },
-    {
-        "question": "Is it safe for 30 users to use live Excel connections to a semantic model simultaneously?",
+        "question": "Can 30 users have live Excel connections to the same semantic model simultaneously?",
         "answer": "Not recommended during capacity overutilization. Use standard Excel exports instead. Live connections can request large result sets and strain resources.",
-        "keywords": ['30', 'users', 'live', 'excel', 'connections', 'semantic', 'model', 'simultaneously', 'capacity', 'overutilization', 'exports', 'strain', 'resources']
-    },
-    {
-        "question": "How can I connect Hive server to Power BI?",
-        "answer": "Use Cloudera drivers (not paid ones). Ensure TLS 1.2 or higher and a 64-bit System DSN.",
-        "keywords": ['hive', 'server', 'power', 'bi', 'cloudera', 'drivers', 'tls', 'dsn', 'system', 'connection', 'connect']
-    },
-    {
-        "question": "Can I use Databricks SQL with Power BI?",
-        "answer": "Yes, you can connect Power BI to Databricks SQL using the native connector. Ensure you have the correct endpoint URL and access tokens configured.",
-        "keywords": ['databricks', 'sql', 'power', 'bi', 'connector', 'endpoint', 'tokens', 'connection']
-    },
-    {
-        "question": "What are Power BI gateways used for?",
-        "answer": "Gateways enable secure data transfer between on-premises data sources and Power BI cloud service. They're essential for hybrid cloud scenarios.",
-        "keywords": ['power', 'bi', 'gateway', 'on-premises', 'cloud', 'data', 'transfer', 'security']
+        "keywords": ['30', 'users', 'live', 'excel', 'connections', 'semantic', 'model', 'simultaneously', 'capacity', 'performance', 'overutilization', 'exports', 'strain', 'resources']
     },
     {
         "question": "How do I resolve Hive Server connection issues?",
         "answer": "Check gateway connectivity, verify Hive Server credentials, and ensure proper network configuration. Review gateway logs for specific error messages.",
         "keywords": ['hive', 'server', 'connection', 'issues', 'gateway', 'connectivity', 'credentials', 'network', 'logs']
+    },
+    {
+        "question": "How can I connect Hive server to Power BI?",
+        "answer": "Use Cloudera drivers (not paid ones). Ensure TLS 1.2 or higher and a 64-bit System DSN.",
+        "keywords": ['hive', 'server', 'power', 'bi', 'cloudera', 'drivers', 'tls', 'dsn', 'system', 'connection', 'connect']
     },
     {
         "question": "I am using the Power BI Semantic model to get some data from other workspace which is not owned by me, where while I published the dashboard in services, the user where I gave access to my dashboard are not able to view the charts which is created by using that Power BI Semantic model. User are getting error message, kindly guide me where and what I need to check",

@@ -55,7 +55,12 @@ class ChatbotRequestHandler(http.server.SimpleHTTPRequestHandler):
                 return
 
             if CHATBOT_AVAILABLE:
-                response = chatbot.get_response(message)
+                result = chatbot.get_response(message)
+                # Handle both tuple and string returns for backward compatibility
+                if isinstance(result, tuple):
+                    response, is_trained = result
+                else:
+                    response = result
             else:
                 # Fallback responses if chatbot isn't available
                 fallback_responses = {

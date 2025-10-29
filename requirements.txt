@@ -1,0 +1,37 @@
+# Power BI Chatbot - Requirements
+# Core dependencies for the chatbot project
+
+# For HTTP requests (used in testing)
+requests>=2.31.0
+
+# For PDF processing (used in scripts for extracting Q&A from PDFs)
+PyPDF2>=3.0.0
+
+# Optional: For better development experience
+# These are not strictly required but useful for development
+
+# For code formatting
+black>=23.0.0
+
+# For linting
+flake8>=6.0.0
+
+# For type checking
+mypy>=1.5.0
+
+# Note: This project primarily uses Python standard library modules:
+# - json (built-in)
+# - http.server (built-in) 
+# - socketserver (built-in)
+# - urllib.parse (built-in)
+# - re (built-in)
+# - os, sys (built-in)
+# - pathlib (built-in)
+# - difflib (built-in)
+# - collections (built-in)
+# - typing (built-in)
+# - time (built-in)
+# - math (built-in)
+
+# Python Version Requirement:
+# Python 3.8+ (for typing features and modern syntax)

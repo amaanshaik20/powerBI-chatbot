@@ -11,13 +11,13 @@ import json
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data'))
 
-from query_matcher import QueryMatcher
+from fast_semantic_matcher import FastSemanticMatcher
 
 class EnhancedChatbot:
     def __init__(self):
         """Initialize the enhanced chatbot with training data"""
         self.training_data = self.load_training_data()
-        self.matcher = QueryMatcher(self.training_data)
+        self.matcher = FastSemanticMatcher(self.training_data)
         self.conversation_history = []
         
     def load_training_data(self):
@@ -67,7 +67,7 @@ class EnhancedChatbot:
             'from_training': is_from_training
         })
         
-        return response
+        return response, is_from_training
     
     def show_debug_info(self, user_input):
         """Show debug information about the matching process"""
@@ -104,12 +104,18 @@ class EnhancedChatbot:
                     print("Chatbot: Please say something!")
                     continue
                 
-                response = self.get_response(user_input)
+                result = self.get_response(user_input)
                 
-                if response == "exit":
+                if result == "exit":
                     print("Chatbot: Goodbye! Thanks for chatting with me! 👋")
                     break
                 
+                # Handle both tuple and string returns for backward compatibility
+                if isinstance(result, tuple):
+                    response, is_from_training = result
+                else:
+                    response = result
+                    
                 print(f"Chatbot: {response}")
                 
                 # Show debug info if enabled
